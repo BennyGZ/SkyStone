@@ -172,8 +172,8 @@ public class Robot_Navigation
          * We also indicate which camera on the RC that we wish to use.
          */
 
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);  // Use this line to see camera display
-        //VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();                             // OR... Use this line to improve performance
+        //VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);  // Use this line to see camera display
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();                             // OR... Use this line to improve performance
 
         // Get your own Vuforia key at  https://developer.vuforia.com/license-manager
         // and paste it here...

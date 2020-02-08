@@ -95,7 +95,13 @@ public class RedSkystoneDriver extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         robot.encoderDrive(SPEED,0.78, 0.78, -0.78, -0.78, 1.45);
         robot.stopMotor();
-        sleep(3000);
+        sleep(500);
+        telemetry.addData("Add", robot.getAngle());
+        telemetry.addData("Last", robot.lastAngles.firstAngle);
+        telemetry.update();
+        robot.correctOrientation();
+        robot.stopMotor();
+        sleep(200);
         while (opModeIsActive()) {
 
             // auto drive or manual drive?
@@ -130,14 +136,27 @@ public class RedSkystoneDriver extends LinearOpMode {
                 sleep(500);
             }
             else if (nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 0)) {
+                telemetry.addData("Add", robot.getAngle());
+                telemetry.addData("Last", robot.lastAngles.firstAngle);
+                telemetry.update();
+                robot.correctOrientation();
+                robot.stopMotor();
+                sleep(200);
                 robot.encoderDrive(SPEED,10, 10, -10, -10, 1.2);
                 robot.setServo(0);
                 robot.stopMotor();
-                sleep(500);
+                sleep(200);
                 robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.8);
+                robot.stopMotor();
+                sleep(200);
+                telemetry.addData("Add", robot.getAngle());
+                telemetry.addData("Last", robot.lastAngles.firstAngle);
+                telemetry.update();
+                robot.correctOrientation();
+                robot.stopMotor();
+                sleep(200);
                 telemetry.addLine("First");
                 telemetry.update();
-                robot.encoderDrive(SPEED, 10, 10, 10, 10, 0.17);
                 robot.encoderDrive(SPEED, -56, 56, -56, 56, 1.78 + counter);
 
 //                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.2);
@@ -168,7 +187,7 @@ public class RedSkystoneDriver extends LinearOpMode {
                 robot.driveMotor(-SPEED);
                 sleep(592);
                 robot.stopMotor();
-                sleep(3000);
+                sleep(1500);
                 counter += 0.16;
                 counter2 ++;
                 timeoutFirst = counter + 1.78;
