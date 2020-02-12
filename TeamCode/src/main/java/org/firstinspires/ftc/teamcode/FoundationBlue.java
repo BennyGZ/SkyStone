@@ -34,7 +34,7 @@ public class FoundationBlue extends LinearOpMode {
         robot.stopMotor();
         sleep(1000);
 
-        robot.encoderDrive(0.06, -10, 10, -10, 10, 1.25);       //Drive Forward
+        robot.encoderDrive(0.06, -10, 10, -10, 10, 1.3);       //Drive Forward
         robot.stopMotor();
         sleep(1000);
 
@@ -43,22 +43,38 @@ public class FoundationBlue extends LinearOpMode {
         robot.stopMotor();
         sleep(1000);
 
-        robot.encoderDrive(.06, 10, -10, 10, -10, 0.75);           //Drive Backwards
+        robot.encoderDrive(.06, 10, -10, 10, -10, 2);           //Drive Backwards
         robot.stopMotor();
         sleep(1000);
 
-        robot.encoderDrive(0.06, -10, -10, -10, -10, 1);        //Turn Left
-        robot.stopMotor();
-        sleep(1000);
+//        robot.encoderDrive(0.06, -10, -10, -10, -10, 1);        //Turn Left
+//        robot.stopMotor();
+//        sleep(1000);
 
         rightServo.setPosition(0);                                                                              //Lower Servos
         leftServo.setPosition(0);
         robot.stopMotor();
         sleep(1000);
-
-        robot.encoderDrive(.06, 10, -10, 10, -10, 1);           //Drive Backwards
-        robot.stopMotor();
-        sleep(30000);
+        robot.encoderDrive(.06, -10, -10, 10, 10, 2.2);           //Strafe Right
+//        robot.stopMotor();
+//        sleep(1000);
+//        robot.encoderDrive(.06, 10, -10, 10, -10, 2);           //Drive Backwards
+//        robot.stopMotor();
+        sleep(1500);
+//        telemetry.addData("Add", robot.getAngle());
+//        telemetry.addData("Last", robot.lastAngles.firstAngle);
+//        telemetry.update();
+//        robot.turnLeft(120);  //Turn left
+//        telemetry.addData("Add", robot.getAngle());
+//        telemetry.addData("Last", robot.lastAngles.firstAngle);
+//        telemetry.update();
+//        robot.turnLeft(110);  //Turn left
+//        telemetry.addData("Add", robot.getAngle());
+//        telemetry.addData("Last", robot.lastAngles.firstAngle);
+//        telemetry.update();
+//        robot.turnLeft(90);  //Turn left
+        robot.encoderDrive(0.06, 10, -10, 10, -10, .5);
+        sleep(1000);
     }
 
 

@@ -183,7 +183,34 @@ public class Robot_OmniDrive
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+    public void turnLeft(double turnAngle){
+        double lowerBound = turnAngle - 2;
+        double upperBound = turnAngle + 2;
+        while(lastAngles.firstAngle >= upperBound || lastAngles.firstAngle <= lowerBound) {
+            angle();
+            if (lastAngles.firstAngle <= lowerBound) {
+                setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightDrive.setPower(-0.2);
+                leftDrive.setPower(-0.2);
+                rightDrive2.setPower(-0.2);
+                leftDrive2.setPower(-0.2);
+            } else if (lastAngles.firstAngle >= upperBound) {
+                setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightDrive.setPower(0.2);
+                leftDrive.setPower(0.2);
+                rightDrive2.setPower(0.2);
+                leftDrive2.setPower(0.2);
+            } else {
+                rightDrive.setPower(0);
+                leftDrive.setPower(0);
+                rightDrive2.setPower(0);
+                leftDrive2.setPower(0);
+            }
 
+        }
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
     public void manualDrive()  {
         // In this mode the Left stick moves the robot fwd & back, and Right & Left.
         // The Right stick rotates CCW and CW.

@@ -58,11 +58,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class TestCodeAuto extends LinearOpMode {
 
     private double counter       =  0;
-    private double counter2      =  0;
-    private double timeoutFirst  =  0;
-    private double timeoutSecond =  0;
-    private double time          =  7;
-    final double TARGET_DISTANCE =  225.0;    // Hold robot's center 400 mm from target
+    private int cycle            =  0;
+    private double phase         =  0;
 
     /* Declare OpMode members. */
     Robot_OmniDrive     robot    = new Robot_OmniDrive();   // Use Omni-Directional drive system
@@ -103,79 +100,63 @@ public class TestCodeAuto extends LinearOpMode {
         robot.stopMotor();
         sleep(200);
         while (opModeIsActive()) {
-
-            // auto drive or manual drive?
-            // In auto drive, the robot will approach any target it can see and then press against it
-            // In manual drive the robot responds to the Joystick.
-
-//            if(nav.targetsAreVisible() && (nav.getRelativeBearing() > 5 && nav.getRelativeBearing() < -5)){
-//                telemetry.addLine("Correct");
-//                if(nav.getRelativeBearing() > 5){
-//                    robot.turnMotor(SPEED);
-//                }
-//                if(nav.getRelativeBearing() < -5){
-//                    robot.turnMotor(-SPEED);
-//                }
-//            }
             if (nav.targetsAreVisible() && (nav.getRobotY() >= 60)){
-//                telemetry.addLine("Right");
-//                telemetry.addData("RobotY:", "%5.0dmm", nav.getRobotY());
-//                telemetry.update();
                 robot.driveMotor(SPEED);
                 sleep(200);
                 robot.stopMotor();
-                sleep(500);
+                sleep(250);
             }
             else if (nav.targetsAreVisible() && (nav.getRobotY() <= 0)){
-//                telemetry.addLine("Left");
-//                telemetry.addData("RobotY:", "%5.0dmm", nav.getRobotY());
-//                telemetry.update();
                 robot.driveMotor(-SPEED);
                 sleep(200);
                 robot.stopMotor();
-                sleep(500);
+                sleep(250);
             }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 0)) {
+            else if (nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 0) && phase == 0) {
                 telemetry.addData("Add", robot.getAngle());
                 telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
                 robot.correctOrientation();
                 robot.stopMotor();
                 sleep(200);
-                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.2);
-                robot.setServo(0);
-                robot.stopMotor();
-                sleep(200);
-                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.3);
-                robot.stopMotor();
-                sleep(200);
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(200);
-                telemetry.addLine("First");
-                telemetry.update();
-                robot.encoderDrive(SPEED, 56, -56, 56, -56, 1.78 + counter);
 
-                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.2);
-                robot.setServo(0.5);
-                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.2);
-                robot.stopMotor();
-                sleep(200);
-                robot.encoderDrive(SPEED, -56, 56, -56, 56, 2.78 + counter);
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(200);
-                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.2);
+                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.2);                //move forward
                 robot.setServo(0);
                 robot.stopMotor();
                 sleep(200);
-                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.3);
+
+                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.35);                //move backward
+                robot.stopMotor();
+                sleep(200);
+
+                telemetry.addData("Add", robot.getAngle());
+                telemetry.addData("Last", robot.lastAngles.firstAngle);
+                telemetry.update();
+                robot.correctOrientation();
+                robot.stopMotor();
+                sleep(200);
+
+                robot.encoderDrive(SPEED, 56, -56, 56, -56, 1.7 + counter);    //cross bridge
+                robot.stopMotor();
+                sleep(500);
+
+                telemetry.addData("Add", robot.getAngle());
+                telemetry.addData("Last", robot.lastAngles.firstAngle);
+                telemetry.update();
+                robot.correctOrientation();
+                robot.stopMotor();
+                sleep(200);
+                if(cycle >= 2){
+                    robot.encoderDrive(SPEED, -10, 10, -10, 10, 1.0);               //park
+                    robot.stopMotor();
+                    sleep(30000);
+                }
+                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.0);                //move forward
+                robot.setServo(0.5);
+                robot.stopMotor();
+                sleep(200);
+
+                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.0);                //move backward
                 robot.stopMotor();
                 sleep(200);
                 telemetry.addData("Add", robot.getAngle());
@@ -184,28 +165,66 @@ public class TestCodeAuto extends LinearOpMode {
                 robot.correctOrientation();
                 robot.stopMotor();
                 sleep(200);
-                telemetry.addLine("First");
+                robot.encoderDrive(SPEED, -56, 56, -56, 56, 1.9 + counter);    //cross bridge
+                robot.stopMotor();
+                sleep(500);
+                telemetry.addData("Add", robot.getAngle());
+                telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
-                robot.encoderDrive(SPEED, 56, -56, 56, -56, 2.78 + counter);
-                telemetry.addLine("Second");
+                robot.correctOrientation();
+                robot.stopMotor();
+                sleep(200);
+
+                phase ++;
+            }
+            else if(nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 0) && phase == 1){
+                robot.stopMotor();
+                sleep(250);
+                telemetry.addData("Add", robot.getAngle());
+                telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
-                robot.encoderDrive(SPEED, -10, 10, -10, 10, 1.0);
-                telemetry.addLine("Third");
+                robot.correctOrientation();
+                robot.stopMotor();
+                sleep(200);
+
+                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.2);                //move forward
+                robot.setServo(0);
+                robot.stopMotor();
+                sleep(200);
+
+                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.35);                //move backward
+                robot.stopMotor();
+                sleep(200);
+
+                telemetry.addData("Add", robot.getAngle());
+                telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
+                robot.correctOrientation();
+                robot.stopMotor();
+                sleep(200);
+
+                robot.encoderDrive(SPEED, 56, -56, 56, -56, 1.9 + counter);    //cross bridge
+                robot.stopMotor();
+                sleep(200);
+                telemetry.addData("Add", robot.getAngle());
+                telemetry.addData("Last", robot.lastAngles.firstAngle);
+                telemetry.update();
+                robot.correctOrientation();
+                robot.stopMotor();
+                sleep(200);
+
+                robot.encoderDrive(SPEED, -10, 10, -10, 10, 1.0);               //park
                 robot.stopMotor();
                 sleep(30000);
-
-            } else {
+            }
+            else {
                 // Drive the robot using the joysticks
                 robot.driveMotor(SPEED);
                 sleep(592);
                 robot.stopMotor();
-                sleep(1500);
+                sleep(1200);
                 counter += 0.16;
-                counter2 ++;
-                timeoutFirst = counter + 1.78;
-                timeoutSecond = counter + 2;
-
+                cycle ++;
             }
 
             // Build telemetry messages with Navigation Information;
