@@ -23,14 +23,16 @@ public class FoundationBlue extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+        final long START = 1000;
+        final long END = 10000;
         robot.initDrive(this);
         robot.setServo(0.5);
         leftServo = hardwareMap.get(Servo.class, "left_servo");
         rightServo = hardwareMap.get(Servo.class, "right_servo");
 
         waitForStart();
-
-        robot.encoderDrive(.06, 10, 10, -10, -10, 1);           //Strafe Left
+        sleep(START);
+        robot.encoderDrive(.06, 10, 10, -10, -10, 1);           //Strafe Right
         robot.stopMotor();
         sleep(1000);
 
@@ -43,7 +45,7 @@ public class FoundationBlue extends LinearOpMode {
         robot.stopMotor();
         sleep(1000);
 
-        robot.encoderDrive(.06, 10, -10, 10, -10, 2);           //Drive Backwards
+        robot.encoderDrive(.06, 10, -10, 10, -10, 1.9);           //Drive Backwards
         robot.stopMotor();
         sleep(1000);
 
@@ -55,7 +57,8 @@ public class FoundationBlue extends LinearOpMode {
         leftServo.setPosition(0);
         robot.stopMotor();
         sleep(1000);
-        robot.encoderDrive(.06, -10, -10, 10, 10, 2.2);           //Strafe Right
+        sleep(END);
+        robot.encoderDrive(.06, -10, -10, 10, 10, 2.2);           //Strafe Left
 //        robot.stopMotor();
 //        sleep(1000);
 //        robot.encoderDrive(.06, 10, -10, 10, -10, 2);           //Drive Backwards

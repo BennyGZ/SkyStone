@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 /**
  * This is NOT an opmode.
  *
@@ -46,14 +47,14 @@ public class Robot_OmniDrive
     Orientation             firstAngle = new Orientation();
     double                  globalAngle, correction;
 
-    private DcMotor  leftDrive      = null;
-    private DcMotor  rightDrive     = null;
-    private DcMotor  leftDrive2      = null;
-    private DcMotor  rightDrive2      = null;
-    private Servo   autoServo = null;
-    private double  driveAxial      = 0 ;   // Positive is forward
-    private double  driveLateral    = 0 ;   // Positive is right
-    private double  driveYaw        = 0 ;   // Positive is CCW
+    private DcMotorEx  leftDrive       = null;
+    private DcMotorEx  rightDrive      = null;
+    private DcMotorEx  leftDrive2      = null;
+    private DcMotorEx  rightDrive2     = null;
+    private Servo   autoServo          = null;
+    private double  driveAxial         = 0 ;   // Positive is forward
+    private double  driveLateral       = 0 ;   // Positive is right
+    private double  driveYaw           = 0 ;   // Positive is CCW
 
     private ElapsedTime     runtime = new ElapsedTime();
 
@@ -83,10 +84,10 @@ public class Robot_OmniDrive
         parameters.loggingEnabled      = false;
 
         // Define and Initialize Motors
-        leftDrive        = myOpMode.hardwareMap.get(DcMotor.class, "front_left");
-        rightDrive       = myOpMode.hardwareMap.get(DcMotor.class, "front_right");
-        leftDrive2       = myOpMode.hardwareMap.get(DcMotor.class, "rear_left");
-        rightDrive2      = myOpMode.hardwareMap.get(DcMotor.class, "rear_right");
+        leftDrive        = myOpMode.hardwareMap.get(DcMotorEx.class, "front_left");
+        rightDrive       = myOpMode.hardwareMap.get(DcMotorEx.class, "front_right");
+        leftDrive2       = myOpMode.hardwareMap.get(DcMotorEx.class, "rear_left");
+        rightDrive2      = myOpMode.hardwareMap.get(DcMotorEx.class, "rear_right");
 
         autoServo  = myOpMode.hardwareMap.get(Servo.class, "auto_servo");
 
@@ -159,15 +160,15 @@ public class Robot_OmniDrive
         return correction;
     }
     public void correctOrientation(){
-        while(lastAngles.firstAngle >= 2 || lastAngles.firstAngle <=-2) {
+        while(lastAngles.firstAngle >= 1.5 || lastAngles.firstAngle <=-1.5) {
             angle();
-            if (lastAngles.firstAngle <= -2) {
+            if (lastAngles.firstAngle <= -1.5) {
                 setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightDrive.setPower(-0.2);
                 leftDrive.setPower(-0.2);
                 rightDrive2.setPower(-0.2);
                 leftDrive2.setPower(-0.2);
-            } else if (lastAngles.firstAngle >= 2) {
+            } else if (lastAngles.firstAngle >= 1.5) {
                 setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightDrive.setPower(0.2);
                 leftDrive.setPower(0.2);
@@ -221,35 +222,45 @@ public class Robot_OmniDrive
         setYaw(-myOpMode.gamepad1.right_stick_x);
     }
     public void driveMotor(double motorPower){
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftDrive.setPower(-motorPower);
         rightDrive.setPower(motorPower);
         leftDrive2.setPower(-motorPower);
         rightDrive2.setPower(motorPower);
 
     }
-    public void turnMotor(double turnPower){    //ccw
-        leftDrive.setPower(turnPower/5);
-        rightDrive.setPower(turnPower/5);
-        leftDrive2.setPower(turnPower/5);
-        rightDrive2.setPower(turnPower/5);
+    public void driveBackward(double motorPower){
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftDrive.setPower(-motorPower);
+        rightDrive.setPower(motorPower);
+        leftDrive2.setPower(-motorPower);
+        rightDrive2.setPower(motorPower);
     }
-    public void strafeMotor(double motorPower){
+    public void driveForward(double motorPower){
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftDrive.setPower(motorPower);
+        rightDrive.setPower(-motorPower);
+        leftDrive2.setPower(motorPower);
+        rightDrive2.setPower(-motorPower);
+    }
+    public void strafeLeft(double motorPower){
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftDrive.setPower(-motorPower);
+        rightDrive.setPower(-motorPower);
+        leftDrive2.setPower(motorPower);
+        rightDrive2.setPower(motorPower);
+    }
+    public void strafeRight(double motorPower){
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftDrive.setPower(motorPower);
         rightDrive.setPower(motorPower);
         leftDrive2.setPower(-motorPower);
         rightDrive2.setPower(-motorPower);
-    }
-    public void setFrontLeft(double power){
-        leftDrive.setPower(power);
-    }
-    public void setFrontRight(double power){
-        rightDrive.setPower(power);
-    }
-    public void setRearLeft(double power){
-        leftDrive2.setPower(power);
-    }
-    public void setRearRight(double power){
-        rightDrive2.setPower(power);
     }
     public void stopMotor(){
         leftDrive.setPower(0);
@@ -265,6 +276,8 @@ public class Robot_OmniDrive
     public void encoderDrive(double speed,
                              double frontLeft, double frontRight, double rearLeft, double rearRight,
                              double timeoutS) {
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         int newFrontLeft;
         int newFrontRight;
         int newRearLeft;

@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 
 @TeleOp(name="Vuforia Tracking Demo", group="main")
-public class TeleopOpmode extends LinearOpMode {
+public class VuforiaVisualizer extends LinearOpMode {
 
     final double TARGET_DISTANCE =  175.0;    // Hold robot's center 400 mm from target
 

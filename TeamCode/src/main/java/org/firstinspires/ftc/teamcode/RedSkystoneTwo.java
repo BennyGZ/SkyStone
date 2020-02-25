@@ -54,8 +54,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  */
 
-@Autonomous(name="Test: Autonomous", group="Autonomous")
-public class TestCodeAuto extends LinearOpMode {
+@Autonomous(name="Red Side: Two Skystone", group="Autonomous")
+public class RedSkystoneTwo extends LinearOpMode {
 
     private double counter       =  0;
     private int cycle            =  0;
@@ -100,19 +100,19 @@ public class TestCodeAuto extends LinearOpMode {
         robot.stopMotor();
         sleep(200);
         while (opModeIsActive()) {
-            if (nav.targetsAreVisible() && (nav.getRobotY() >= 60)){
+            if (nav.targetsAreVisible() && (nav.getRobotY() >= 50)){
                 robot.driveMotor(SPEED);
                 sleep(200);
                 robot.stopMotor();
                 sleep(250);
             }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() <= 0)){
+            else if (nav.targetsAreVisible() && (nav.getRobotY() <= 10)){
                 robot.driveMotor(-SPEED);
                 sleep(200);
                 robot.stopMotor();
                 sleep(250);
             }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 0) && phase == 0) {
+            else if (nav.targetsAreVisible() && (nav.getRobotY() < 50 && nav.getRobotY() > 10) && phase == 0) {
                 telemetry.addData("Add", robot.getAngle());
                 telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
@@ -125,7 +125,7 @@ public class TestCodeAuto extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.35);                //move backward
+                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.3);                //move backward
                 robot.stopMotor();
                 sleep(200);
 
@@ -136,7 +136,7 @@ public class TestCodeAuto extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED, 56, -56, 56, -56, 1.7 + counter);    //cross bridge
+                robot.encoderDrive(SPEED, -56, 56, -56, 56, 1.6 + counter);    //cross bridge
                 robot.stopMotor();
                 sleep(500);
 
@@ -147,7 +147,7 @@ public class TestCodeAuto extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
                 if(cycle >= 2){
-                    robot.encoderDrive(SPEED, -10, 10, -10, 10, 1.0);               //park
+                    robot.encoderDrive(SPEED, 10, -10, 10, -10, 1.0);               //park
                     robot.stopMotor();
                     sleep(30000);
                 }
@@ -165,7 +165,7 @@ public class TestCodeAuto extends LinearOpMode {
                 robot.correctOrientation();
                 robot.stopMotor();
                 sleep(200);
-                robot.encoderDrive(SPEED, -56, 56, -56, 56, 1.9 + counter);    //cross bridge
+                robot.encoderDrive(SPEED, 56, -56, 56, -56, 1.9 + counter);    //cross bridge
                 robot.stopMotor();
                 sleep(500);
                 telemetry.addData("Add", robot.getAngle());
@@ -177,7 +177,7 @@ public class TestCodeAuto extends LinearOpMode {
 
                 phase ++;
             }
-            else if(nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 0) && phase == 1){
+            else if(nav.targetsAreVisible() && (nav.getRobotY() < 50 && nav.getRobotY() > 10) && phase == 1){
                 robot.stopMotor();
                 sleep(250);
                 telemetry.addData("Add", robot.getAngle());
@@ -187,12 +187,12 @@ public class TestCodeAuto extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.2);                //move forward
+                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.3);                //move forward
                 robot.setServo(0);
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.35);                //move backward
+                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.3);                //move backward
                 robot.stopMotor();
                 sleep(200);
 
@@ -203,9 +203,9 @@ public class TestCodeAuto extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED, 56, -56, 56, -56, 1.9 + counter);    //cross bridge
+                robot.encoderDrive(SPEED, -56, 56, -56, 56, 2.0 + counter);    //cross bridge
                 robot.stopMotor();
-                sleep(200);
+                sleep(500);
                 telemetry.addData("Add", robot.getAngle());
                 telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
@@ -213,13 +213,13 @@ public class TestCodeAuto extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED, -10, 10, -10, 10, 1.0);               //park
+                robot.encoderDrive(SPEED, 10, -10, 10, -10, 0.9);               //park
                 robot.stopMotor();
                 sleep(30000);
             }
             else {
                 // Drive the robot using the joysticks
-                robot.driveMotor(SPEED);
+                robot.driveMotor(-SPEED);
                 sleep(592);
                 robot.stopMotor();
                 sleep(1200);
