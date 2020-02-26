@@ -135,20 +135,20 @@ public class TestAutonomous extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
                 robot.driveForward(SPEED);
-                sleep((long)(1780 + counter));
+                sleep((long)(1350 + counter));
                 robot.stopMotor();
                 sleep(1000);
                 robot.driveBackward(SPEED);
-                sleep(900);
+                sleep(600);
                 robot.stopMotor();
                 sleep(30000);
 
             } else {
                 robot.driveBackward(0.2);
-                sleep(592);
+                sleep(650);
                 robot.stopMotor();
                 sleep(1200);
-                counter += 160;
+                counter += 300;
                 counter2 ++;
 
             }

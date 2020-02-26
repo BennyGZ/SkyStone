@@ -160,7 +160,7 @@ public class Robot_OmniDrive
         return correction;
     }
     public void correctOrientation(){
-        while(lastAngles.firstAngle >= 1.5 || lastAngles.firstAngle <=-1.5) {
+        while(lastAngles.firstAngle >= 1.5 || lastAngles.firstAngle <= -1.5) {
             angle();
             if (lastAngles.firstAngle <= -1.5) {
                 setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

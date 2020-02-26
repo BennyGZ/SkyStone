@@ -54,8 +54,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  */
 
-@Autonomous(name="Blue Side: Two Skystone", group="Autonomous")
-public class BlueSkystoneTwo extends LinearOpMode {
+@Autonomous(name="Test: Two Skystone", group="Autonomous")
+public class TestAutonomousTwo extends LinearOpMode {
 
     private double counter       =  0;
     private int cycle            =  0;
@@ -65,7 +65,7 @@ public class BlueSkystoneTwo extends LinearOpMode {
     Robot_OmniDrive     robot    = new Robot_OmniDrive();   // Use Omni-Directional drive system
     Robot_Navigation    nav      = new Robot_Navigation();  // Use Image Tracking library
 
-    final double SPEED           =  0.06;
+    final double SPEED           =  0.4;
 
     @Override
     public void runOpMode() {
@@ -90,7 +90,8 @@ public class BlueSkystoneTwo extends LinearOpMode {
         }*/
         waitForStart();
         // run until the end of the match (driver presses STOP)
-        robot.encoderDrive(SPEED,0.78, 0.78, -0.78, -0.78, 1.45);
+        robot.strafeRight(SPEED);
+        sleep(1200);
         robot.stopMotor();
         sleep(500);
         telemetry.addData("Add", robot.getAngle());
@@ -101,16 +102,16 @@ public class BlueSkystoneTwo extends LinearOpMode {
         sleep(200);
         while (opModeIsActive()) {
             if (nav.targetsAreVisible() && (nav.getRobotY() >= 50)){
-                robot.driveMotor(SPEED);
+                robot.driveBackward(0.15);
                 sleep(200);
                 robot.stopMotor();
-                sleep(250);
+                sleep(500);
             }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() <= 10)){
-                robot.driveMotor(-SPEED);
+            else if (nav.targetsAreVisible() && (nav.getRobotY() <= 0)){
+                robot.driveForward(0.15);
                 sleep(200);
                 robot.stopMotor();
-                sleep(250);
+                sleep(500);
             }
             else if (nav.targetsAreVisible() && (nav.getRobotY() < 50 && nav.getRobotY() > 10) && phase == 0) {
                 telemetry.addData("Add", robot.getAngle());
@@ -118,17 +119,16 @@ public class BlueSkystoneTwo extends LinearOpMode {
                 telemetry.update();
                 robot.correctOrientation();
                 robot.stopMotor();
-                sleep(200);
-
-                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.2);                //move forward
+                sleep(400);
+                robot.strafeRight(SPEED);
+                sleep(600);
                 robot.setServo(0);
                 robot.stopMotor();
                 sleep(200);
-
-                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.25);                //move backward
+                robot.strafeLeft(SPEED);
+                sleep(800);
                 robot.stopMotor();
                 sleep(200);
-
                 telemetry.addData("Add", robot.getAngle());
                 telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
@@ -136,27 +136,25 @@ public class BlueSkystoneTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED, 56, -56, 56, -56, 1.6 + counter);    //cross bridge
+                robot.driveForward(SPEED);
+                sleep((long)(1350 + counter));
                 robot.stopMotor();
-                sleep(500);
+                sleep(400);
 
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(200);
                 if(cycle >= 2){
-                    robot.encoderDrive(SPEED, -10, 10, -10, 10, 1.0);               //park
+                    robot.driveBackward(SPEED);
+                    sleep(600);
                     robot.stopMotor();
                     sleep(30000);
                 }
-                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.0);                //move forward
+
+                robot.strafeRight(SPEED);
+                sleep(800);
                 robot.setServo(0.5);
                 robot.stopMotor();
                 sleep(200);
-
-                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.0);                //move backward
+                robot.strafeLeft(SPEED);
+                sleep(800);
                 robot.stopMotor();
                 sleep(200);
 
@@ -167,9 +165,11 @@ public class BlueSkystoneTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED, -56, 56, -56, 56, 1.9 + counter);    //cross bridge
+                robot.driveBackward(SPEED);
+                sleep((long)(1350 + counter));
                 robot.stopMotor();
                 sleep(750);
+
                 telemetry.addData("Add", robot.getAngle());
                 telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
@@ -182,6 +182,7 @@ public class BlueSkystoneTwo extends LinearOpMode {
             else if(nav.targetsAreVisible() && (nav.getRobotY() < 50 && nav.getRobotY() > 10) && phase == 1){
                 robot.stopMotor();
                 sleep(250);
+
                 telemetry.addData("Add", robot.getAngle());
                 telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
@@ -189,12 +190,15 @@ public class BlueSkystoneTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED,10, 10, -10, -10, 1.3);                //move forward
+                robot.strafeRight(SPEED);
+                sleep(800);
+                robot.stopMotor();
+                sleep(400);
                 robot.setServo(0);
                 robot.stopMotor();
                 sleep(200);
-
-                robot.encoderDrive(SPEED,-10, -10, 10, 10, 1.3);                //move backward
+                robot.strafeLeft(SPEED);
+                sleep(800);
                 robot.stopMotor();
                 sleep(200);
 
@@ -205,9 +209,11 @@ public class BlueSkystoneTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED, 56, -56, 56, -56, 2.0 + counter);    //cross bridge
+                robot.driveForward(SPEED);
+                sleep((long)(1350 + counter));
                 robot.stopMotor();
-                sleep(200);
+                sleep(400);
+
                 telemetry.addData("Add", robot.getAngle());
                 telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
@@ -215,17 +221,18 @@ public class BlueSkystoneTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.encoderDrive(SPEED, -10, 10, -10, 10, 0.8);               //park
+                robot.driveBackward(SPEED);
+                sleep(600);
                 robot.stopMotor();
                 sleep(30000);
             }
             else {
                 // Drive the robot using the joysticks
-                robot.driveMotor(SPEED);
-                sleep(592);
+                robot.driveBackward(0.2);
+                sleep(650);
                 robot.stopMotor();
                 sleep(1200);
-                counter += 0.16;
+                counter += 300;
                 cycle ++;
             }
 
