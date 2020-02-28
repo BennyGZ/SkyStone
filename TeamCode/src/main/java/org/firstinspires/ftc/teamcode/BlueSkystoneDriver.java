@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  */
 
-@Autonomous(name="Blue Side: Skystone Driver Side", group="Autonomous")
+@Autonomous(name="(OLD)Blue Side: Skystone Driver Side", group="Autonomous")
 public class BlueSkystoneDriver extends LinearOpMode {
 
     private double counter       =  0;

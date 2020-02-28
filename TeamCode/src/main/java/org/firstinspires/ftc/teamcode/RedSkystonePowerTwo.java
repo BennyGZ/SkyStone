@@ -54,8 +54,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  */
 
-@Autonomous(name="Test: Autonomous Two", group="Autonomous")
-public class TestAutonomousTwo extends LinearOpMode {
+@Autonomous(name="Red Side: Two Skystone", group="Autonomous")
+public class RedSkystonePowerTwo extends LinearOpMode {
 
     private double counter       =  0;
     private int cycle            =  0;
@@ -101,19 +101,19 @@ public class TestAutonomousTwo extends LinearOpMode {
         robot.stopMotor();
         sleep(200);
         while (opModeIsActive()) {
-            if (nav.targetsAreVisible() && (nav.getRobotY() >= 50)){
+            if (nav.targetsAreVisible() && (nav.getRobotY() >= 60)){
                 robot.driveBackward(0.15);
                 sleep(200);
                 robot.stopMotor();
                 sleep(500);
             }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() <= 0)){
+            else if (nav.targetsAreVisible() && (nav.getRobotY() <= 30)){
                 robot.driveForward(0.15);
                 sleep(200);
                 robot.stopMotor();
                 sleep(500);
             }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() < 50 && nav.getRobotY() > 10) && phase == 0) {
+            else if (nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 30) && phase == 0) {
                 telemetry.addData("Add", robot.getAngle());
                 telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
@@ -136,13 +136,13 @@ public class TestAutonomousTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.driveForward(SPEED);
-                sleep((long)(1350 + counter));
+                robot.driveBackward(SPEED);
+                sleep((long)(1400 + counter));
                 robot.stopMotor();
                 sleep(400);
 
                 if(cycle >= 2){
-                    robot.driveBackward(SPEED);
+                    robot.driveForward(SPEED);
                     sleep(600);
                     robot.stopMotor();
                     sleep(30000);
@@ -165,8 +165,8 @@ public class TestAutonomousTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.driveBackward(SPEED);
-                sleep((long)(1350 + counter));
+                robot.driveForward(SPEED);
+                sleep((long)(1400 + counter));
                 robot.stopMotor();
                 sleep(750);
 
@@ -179,7 +179,7 @@ public class TestAutonomousTwo extends LinearOpMode {
 
                 phase ++;
             }
-            else if(nav.targetsAreVisible() && (nav.getRobotY() < 50 && nav.getRobotY() > 10) && phase == 1){
+            else if(nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 30) && phase == 1){
                 robot.stopMotor();
                 sleep(250);
 
@@ -209,8 +209,8 @@ public class TestAutonomousTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.driveForward(SPEED);
-                sleep((long)(1350 + counter));
+                robot.driveBackward(SPEED);
+                sleep((long)(1400 + counter));
                 robot.stopMotor();
                 sleep(400);
 
@@ -221,14 +221,14 @@ public class TestAutonomousTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
 
-                robot.driveBackward(SPEED);
+                robot.driveForward(SPEED);
                 sleep(600);
                 robot.stopMotor();
                 sleep(30000);
             }
             else {
                 // Drive the robot using the joysticks
-                robot.driveBackward(0.2);
+                robot.driveForward(0.2);
                 sleep(650);
                 robot.stopMotor();
                 sleep(1200);

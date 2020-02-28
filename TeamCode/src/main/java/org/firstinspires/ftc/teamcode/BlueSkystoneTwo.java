@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  */
 
-@Autonomous(name="Blue Side: Two Skystone", group="Autonomous")
+@Autonomous(name="(OLD)Blue Side: Two Skystone", group="Autonomous")
 public class BlueSkystoneTwo extends LinearOpMode {
 
     private double counter       =  0;

@@ -31,35 +31,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 
-/**
- * This example is designed to show how to identify a target, get the robot's position, and then plan
- * and execute an approach path to the target.
- *
- * This OpMode uses two "utility" classes to abstract (hide) the hardware and navigation GUTs.
- * These are:  Robot_OmniDrive and Robot_Navigation.
- *
- * This LinearOpMode uses basic hardware and nav calls to drive the robot in either manual or auto mode.
- * AutoMode is engaged by pressing and holding the Left Bumper.  Release the Bumper to return to Manual Mode.
- *
- *  *ManualMode* simply uses the joysticks to move the robot in three degrees of freedom.
- *  - Left stick X (translate left and right)
- *  - Left Stick Y (translate forward and backwards)
- *  - Right Stick X (rotate CW and CCW)
- *
- *  *AutoMode* will approach the image target and attempt to reach a position directly in front
- *  of the center line of the image, with a predefined stand-off distance.
- *
- *  To simplify this example, a gyro is NOT used.  Therefore there is no attempt being made to stabilize
- *  strafing motions, or to perform field-centric driving.
- *
- */
 
-@Autonomous(name="Test: Autonomous Two", group="Autonomous")
-public class TestAutonomousTwo extends LinearOpMode {
+@Autonomous(name="Red Side: Skystone Driver Side", group="Autonomous")
+public class RedSkystonePowerDriver extends LinearOpMode {
 
     private double counter       =  0;
-    private int cycle            =  0;
-    private double phase         =  0;
+    private double counter2      =  0;
+    private double time          =  7;
+    final double TARGET_DISTANCE =  225.0;    // Hold robot's center 400 mm from target
 
     /* Declare OpMode members. */
     Robot_OmniDrive     robot    = new Robot_OmniDrive();   // Use Omni-Directional drive system
@@ -101,19 +80,39 @@ public class TestAutonomousTwo extends LinearOpMode {
         robot.stopMotor();
         sleep(200);
         while (opModeIsActive()) {
-            if (nav.targetsAreVisible() && (nav.getRobotY() >= 50)){
+
+            // auto drive or manual drive?
+            // In auto drive, the robot will approach any target it can see and then press against it
+            // In manual drive the robot responds to the Joystick.
+
+//            if(nav.targetsAreVisible() && (nav.getRelativeBearing() > 5 && nav.getRelativeBearing() < -5)){
+//                telemetry.addLine("Correct");
+//                if(nav.getRelativeBearing() > 5){
+//                    robot.turnMotor(SPEED);
+//                }
+//                if(nav.getRelativeBearing() < -5){
+//                    robot.turnMotor(-SPEED);
+//                }
+//            }
+            if (nav.targetsAreVisible() && (nav.getRobotY() >= 60)){
+//                telemetry.addLine("Right");
+//                telemetry.addData("RobotY:", "%5.0dmm", nav.getRobotY());
+//                telemetry.update();
                 robot.driveBackward(0.15);
                 sleep(200);
                 robot.stopMotor();
                 sleep(500);
             }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() <= 0)){
+            else if (nav.targetsAreVisible() && (nav.getRobotY() <= 30)){
+//                telemetry.addLine("Left");
+//                telemetry.addData("RobotY:", "%5.0dmm", nav.getRobotY());
+//                telemetry.update();
                 robot.driveForward(0.15);
                 sleep(200);
                 robot.stopMotor();
                 sleep(500);
             }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() < 50 && nav.getRobotY() > 10) && phase == 0) {
+            else if (nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 30)) {
                 telemetry.addData("Add", robot.getAngle());
                 telemetry.addData("Last", robot.lastAngles.firstAngle);
                 telemetry.update();
@@ -126,7 +125,7 @@ public class TestAutonomousTwo extends LinearOpMode {
                 robot.stopMotor();
                 sleep(200);
                 robot.strafeLeft(SPEED);
-                sleep(800);
+                sleep(1200);
                 robot.stopMotor();
                 sleep(200);
                 telemetry.addData("Add", robot.getAngle());
@@ -135,105 +134,23 @@ public class TestAutonomousTwo extends LinearOpMode {
                 robot.correctOrientation();
                 robot.stopMotor();
                 sleep(200);
-
-                robot.driveForward(SPEED);
-                sleep((long)(1350 + counter));
-                robot.stopMotor();
-                sleep(400);
-
-                if(cycle >= 2){
-                    robot.driveBackward(SPEED);
-                    sleep(600);
-                    robot.stopMotor();
-                    sleep(30000);
-                }
-
-                robot.strafeRight(SPEED);
-                sleep(800);
-                robot.setServo(0.5);
-                robot.stopMotor();
-                sleep(200);
-                robot.strafeLeft(SPEED);
-                sleep(800);
-                robot.stopMotor();
-                sleep(200);
-
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(200);
-
                 robot.driveBackward(SPEED);
-                sleep((long)(1350 + counter));
+                sleep((long)(1400 + counter));
                 robot.stopMotor();
-                sleep(750);
-
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(200);
-
-                phase ++;
-            }
-            else if(nav.targetsAreVisible() && (nav.getRobotY() < 50 && nav.getRobotY() > 10) && phase == 1){
-                robot.stopMotor();
-                sleep(250);
-
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(200);
-
-                robot.strafeRight(SPEED);
-                sleep(800);
-                robot.stopMotor();
-                sleep(400);
-                robot.setServo(0);
-                robot.stopMotor();
-                sleep(200);
-                robot.strafeLeft(SPEED);
-                sleep(800);
-                robot.stopMotor();
-                sleep(200);
-
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(200);
-
+                sleep(1000);
                 robot.driveForward(SPEED);
-                sleep((long)(1350 + counter));
-                robot.stopMotor();
-                sleep(400);
-
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(200);
-
-                robot.driveBackward(SPEED);
                 sleep(600);
                 robot.stopMotor();
                 sleep(30000);
-            }
-            else {
-                // Drive the robot using the joysticks
-                robot.driveBackward(0.2);
+
+            } else {
+                robot.driveForward(0.2);
                 sleep(650);
                 robot.stopMotor();
-                sleep(1200);
+                sleep(1000);
                 counter += 300;
-                cycle ++;
+                counter2 ++;
+
             }
 
             // Build telemetry messages with Navigation Information;
