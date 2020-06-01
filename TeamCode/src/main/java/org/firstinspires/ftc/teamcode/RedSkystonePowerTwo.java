@@ -77,7 +77,6 @@ public class RedSkystonePowerTwo extends LinearOpMode {
         // Activate Vuforia (this takes a few seconds)
         nav.activateTracking();
 
-        robot.setServo(0.5);
         // Wait for the game to start (driver presses PLAY)
         /*while (!isStarted()) {
             // Prompt User

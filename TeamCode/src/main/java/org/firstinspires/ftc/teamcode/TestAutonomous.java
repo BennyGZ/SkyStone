@@ -27,141 +27,38 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 @Autonomous(name="Test: Autonomous", group="Autonomous")
 public class TestAutonomous extends LinearOpMode {
-
-    private double counter       =  0;
-    private double counter2      =  0;
-    private double time          =  7;
-    final double TARGET_DISTANCE =  225.0;    // Hold robot's center 400 mm from target
-
-    /* Declare OpMode members. */
-    Robot_OmniDrive     robot    = new Robot_OmniDrive();   // Use Omni-Directional drive system
-    Robot_Navigation    nav      = new Robot_Navigation();  // Use Image Tracking library
-
-    final double SPEED           =  0.4;
+    private DcMotor leftMotorF = null;
+    private DcMotor rightMotorF = null;
+    private DcMotor leftMotorB = null;
+    private DcMotor rightMotorB = null;
 
     @Override
     public void runOpMode() {
+        leftMotorF = hardwareMap.get(DcMotor.class, "front_left");
+        rightMotorF = hardwareMap.get(DcMotor.class, "front_right");
+        leftMotorB = hardwareMap.get(DcMotor.class, "back_left");
+        rightMotorB = hardwareMap.get(DcMotor.class, "back_right");
 
-        // Initialize the robot and navigation
-        robot.initDrive(this);
-        nav.initVuforia(this, robot);
+        leftMotorF.setDirection(DcMotor.Direction.REVERSE);
+        leftMotorB.setDirection(DcMotor.Direction.REVERSE);
 
-        // Activate Vuforia (this takes a few seconds)
-        nav.activateTracking();
+        leftMotorF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotorF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftMotorB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotorB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.setServo(0.5);
-        // Wait for the game to start (driver presses PLAY)
-        /*while (!isStarted()) {
-            // Prompt User
-            telemetry.addData(">", "Press start");
-
-            // Display any Nav Targets while we wait for the match to start
-            nav.targetsAreVisible();
-            nav.addNavTelemetry();
-            telemetry.update();
-        }*/
         waitForStart();
-        // run until the end of the match (driver presses STOP)
-        robot.strafeRight(SPEED);
-        sleep(1200);
-        robot.stopMotor();
-        sleep(500);
-        telemetry.addData("Add", robot.getAngle());
-        telemetry.addData("Last", robot.lastAngles.firstAngle);
-        telemetry.update();
-        robot.correctOrientation();
-        robot.stopMotor();
-        sleep(200);
+
         while (opModeIsActive()) {
 
-            // auto drive or manual drive?
-            // In auto drive, the robot will approach any target it can see and then press against it
-            // In manual drive the robot responds to the Joystick.
-
-//            if(nav.targetsAreVisible() && (nav.getRelativeBearing() > 5 && nav.getRelativeBearing() < -5)){
-//                telemetry.addLine("Correct");
-//                if(nav.getRelativeBearing() > 5){
-//                    robot.turnMotor(SPEED);
-//                }
-//                if(nav.getRelativeBearing() < -5){
-//                    robot.turnMotor(-SPEED);
-//                }
-//            }
-            if (nav.targetsAreVisible() && (nav.getRobotY() >= 60)){
-//                telemetry.addLine("Right");
-//                telemetry.addData("RobotY:", "%5.0dmm", nav.getRobotY());
-//                telemetry.update();
-                robot.driveBackward(0.15);
-                sleep(200);
-                robot.stopMotor();
-                sleep(500);
-            }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() <= 0)){
-//                telemetry.addLine("Left");
-//                telemetry.addData("RobotY:", "%5.0dmm", nav.getRobotY());
-//                telemetry.update();
-                robot.driveForward(0.15);
-                sleep(200);
-                robot.stopMotor();
-                sleep(500);
-            }
-            else if (nav.targetsAreVisible() && (nav.getRobotY() < 60 && nav.getRobotY() > 0)) {
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(400);
-                robot.strafeRight(SPEED);
-                sleep(600);
-                robot.setServo(0);
-                robot.stopMotor();
-                sleep(200);
-                robot.strafeLeft(SPEED);
-                sleep(800);
-                robot.stopMotor();
-                sleep(200);
-                telemetry.addData("Add", robot.getAngle());
-                telemetry.addData("Last", robot.lastAngles.firstAngle);
-                telemetry.update();
-                robot.correctOrientation();
-                robot.stopMotor();
-                sleep(200);
-                robot.driveForward(SPEED);
-                sleep((long)(1350 + counter));
-                robot.stopMotor();
-                sleep(1000);
-                robot.driveBackward(SPEED);
-                sleep(600);
-                robot.stopMotor();
-                sleep(30000);
-
-            } else {
-                robot.driveBackward(0.2);
-                sleep(650);
-                robot.stopMotor();
-                sleep(1200);
-                counter += 300;
-                counter2 ++;
-
-            }
-
-            // Build telemetry messages with Navigation Information;
-            nav.addNavTelemetry();
-
-            //  Move the robot according to the pre-determined axis motions
-//            if (!robot.checkAlignment())  {
-//                robot.align();
-//            }
-//            robot.moveRobot();
-            telemetry.update();
         }
 
         telemetry.addData(">", "Shutting Down. Bye!");
