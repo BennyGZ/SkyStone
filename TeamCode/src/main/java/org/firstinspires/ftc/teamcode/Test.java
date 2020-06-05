@@ -73,6 +73,7 @@ public class Test extends LinearOpMode {
 
     ColorSensor sensorRGB;
     DeviceInterfaceModule cdim;
+    private int number;
 
     // we assume that the LED pin of the RGB sensor is connected to
     // digital port 5 (zero indexed).
