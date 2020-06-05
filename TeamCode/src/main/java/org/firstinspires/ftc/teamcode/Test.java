@@ -58,6 +58,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class Test extends LinearOpMode {
 
     private double counter       =  0;
+    private double random;
     private double counter2      =  0;
     private double timeoutFirst  =  0;
     private double timeoutSecond =  0;
